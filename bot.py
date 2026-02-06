@@ -239,14 +239,48 @@ async def back(call: CallbackQuery):
 
 # ================= СОГЛАСИЕ =================
 
+from aiogram import Bot, Dispatcher, F, types
+from keyboards import main_menu_kb, tariffs_kb, back_to_menu_kb
+
+dp = Dispatcher()
+
+# Согласие
+
 @dp.callback_query(F.data == "agree")
-async def agree(call: CallbackQuery):
-    await call.message.answer(
-        "✅ Спасибо!\n\n"
-        "Вы приняли условия договора и соглашения.\n"
-        "Теперь можно переходить к выбору тарифа 🚀"
+async def agree(call: types.CallbackQuery):
+    await call.message.edit_text(
+        "✅ Спасибо!\nВы приняли условия.\nВыберите нужный раздел 👇",
+        reply_markup=main_menu_kb()
     )
     await call.answer()
+
+# Тарифы
+@dp.callback_query(F.data == "menu_tariffs")
+async def show_tariffs(call: types.CallbackQuery):
+    await call.message.edit_text(
+        "💳 Выберите тариф:",
+        reply_markup=tariffs_kb()
+    )
+    await call.answer()
+
+# Доп. информация
+@dp.callback_query(F.data == "menu_info")
+async def show_info(call: types.CallbackQuery):
+    await call.message.edit_text(
+        "ℹ️ О нас ...",
+        reply_markup=back_to_menu_kb()
+    )
+    await call.answer()
+
+# Кнопка назад
+@dp.callback_query(F.data == "back_to_menu")
+async def back_to_menu(call: types.CallbackQuery):
+    await call.message.edit_text(
+        "🏠 Главное меню\nВыберите нужный раздел 👇",
+        reply_markup=main_menu_kb()
+    )
+    await call.answer()
+
 
 # ================= ЗАПУСК =================
 

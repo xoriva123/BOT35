@@ -62,6 +62,15 @@ async def start():
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.create_task(start())
+    import asyncio
+
+
+    async def main():
+        # твой код здесь, например запуск бота
+        await dp.start_polling(bot)
+
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+
     uvicorn.run(app, host="0.0.0.0", port=8001)
